@@ -3,7 +3,7 @@ import random
 from sqlalchemy.sql.expression import func
 from flask import render_template, request, redirect, url_for, jsonify
 
-from app import db
+from extensions import db
 from models import Book, Volume, Section, Poem, DailyVerse, BiographySection
 from utils import get_daily_verse
 
