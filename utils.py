@@ -1,7 +1,7 @@
 import datetime
 import random
 from sqlalchemy import func
-from app import db
+from extensions import db
 from models import Poem, DailyVerse
 
 def get_random_poem():
