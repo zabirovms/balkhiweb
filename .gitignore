@@ -1,0 +1,30 @@
+# Python bytecode
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Environment
+.env
+venv/
+env/
+ENV/
+
+# Flask stuff
+instance/
+.webassets-cache
+
+# Database
+*.sqlite
+
+# IDE stuff
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# OS stuff
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log

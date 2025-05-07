@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="tg" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Мавлоно Ҷалолуддини Балхӣ (Румӣ){% endblock %}</title>
+    
+    <!-- TailwindCSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: {
+                            50: '#f8f9fc',
+                            100: '#eceef9',
+                            200: '#d5d9f2',
+                            300: '#b1b9e6',
+                            400: '#8790d8',
+                            500: '#6166c7',
+                            600: '#4a4eb1',
+                            700: '#3c4090',
+                            800: '#343775',
+                            900: '#2e3162',
+                        },
+                        secondary: {
+                            50: '#fdf8f6',
+                            100: '#f7ebe4',
+                            200: '#f0d5c6',
+                            300: '#e5b59f',
+                            400: '#d88f72',
+                            500: '#c86b4e',
+                            600: '#b15238',
+                            700: '#94422d',
+                            800: '#7a3929',
+                            900: '#673326',
+                        },
+                    },
+                    fontFamily: {
+                        'sans': ['Roboto', 'sans-serif'],
+                        'serif': ['Georgia', 'serif'],
+                    },
+                }
+            }
+        }
+    </script>
+    
+    <!-- Custom styles -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/custom.css') }}">
+    
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    {% block extra_head %}{% endblock %}
+</head>
+<body class="min-h-screen bg-gradient-to-b from-primary-50 to-primary-100 text-gray-800">
+    <!-- Header/Navigation -->
+    <header>
+        <!-- Top navigation bar with logo and search -->
+        <div class="bg-white shadow-md py-3">
+            <div class="container mx-auto px-4">
+                <div class="flex items-center justify-between">
+                    <a href="{{ url_for('index') }}" class="text-2xl font-serif font-bold text-primary-700">
+                        Мавлоно Румӣ
+                    </a>
+                    
+                    <!-- Search Bar -->
+                    <div class="hidden lg:block w-1/3">
+                        <form action="{{ url_for('search') }}" method="GET" class="flex">
+                            <input 
+                                type="text" 
+                                name="q" 
+                                placeholder="Ҷустуҷӯи шеър..." 
+                                class="w-full px-4 py-2 border border-gray-300 rounded-l-md focus:outline-none focus:ring-1 focus:ring-primary-500 focus:border-primary-500"
+                            >
+                            <button type="submit" class="bg-primary-600 text-white px-4 py-2 rounded-r-md hover:bg-primary-700 transition">
+                                <i class="fas fa-search"></i>
+                            </button>
+                        </form>
+                    </div>
+                    
+                    <!-- Mobile menu button -->
+                    <button id="mobile-menu-button" class="sm:hidden text-gray-700">
+                        <i class="fas fa-bars text-xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Main navigation menu - always visible on desktop -->
+        <div class="bg-primary-600 text-white py-2 shadow-md">
+            <div class="container mx-auto px-4">
+                <nav class="hidden sm:flex justify-center space-x-8">
+                    <a href="{{ url_for('index') }}" class="py-2 px-3 text-white hover:bg-primary-700 rounded transition {% if request.path == url_for('index') %}nav-active{% endif %}">Асосӣ</a>
+                    <a href="{{ url_for('poems') }}" class="py-2 px-3 text-white hover:bg-primary-700 rounded transition {% if request.path == url_for('poems') or 'poem_detail' in request.path %}nav-active{% endif %}">Ашъор</a>
+                    <a href="{{ url_for('biography') }}" class="py-2 px-3 text-white hover:bg-primary-700 rounded transition {% if request.path == url_for('biography') %}nav-active{% endif %}">Зиндагинома</a>
+                    <a href="{{ url_for('search') }}" class="py-2 px-3 text-white hover:bg-primary-700 rounded transition {% if request.path == url_for('search') %}nav-active{% endif %}">Ҷустуҷӯ</a>
+                </nav>
+            </div>
+        </div>
+        
+        <!-- Mobile Navigation -->
+        <div id="mobile-menu" class="hidden sm:hidden px-4 py-3 bg-gray-50">
+            <div class="space-y-2">
+                <a href="{{ url_for('index') }}" class="block py-2 px-4 hover:bg-primary-100 rounded transition {% if request.path == url_for('index') %}bg-primary-100 text-primary-800{% endif %}">Асосӣ</a>
+                <a href="{{ url_for('poems') }}" class="block py-2 px-4 hover:bg-primary-100 rounded transition {% if request.path == url_for('poems') or 'poem_detail' in request.path %}bg-primary-100 text-primary-800{% endif %}">Ашъор</a>
+                <a href="{{ url_for('biography') }}" class="block py-2 px-4 hover:bg-primary-100 rounded transition {% if request.path == url_for('biography') %}bg-primary-100 text-primary-800{% endif %}">Зиндагинома</a>
+                <a href="{{ url_for('search') }}" class="block py-2 px-4 hover:bg-primary-100 rounded transition {% if request.path == url_for('search') %}bg-primary-100 text-primary-800{% endif %}">Ҷустуҷӯ</a>
+            </div>
+            
+            <!-- Mobile Search -->
+            <form action="{{ url_for('search') }}" method="GET" class="mt-4">
+                <div class="flex">
+                    <input 
+                        type="text" 
+                        name="q" 
+                        placeholder="Ҷустуҷӯи шеър..." 
+                        class="flex-grow px-3 py-2 border border-gray-300 rounded-l-md focus:outline-none focus:ring-1 focus:ring-primary-500 focus:border-primary-500"
+                    >
+                    <button type="submit" class="bg-primary-600 text-white px-4 py-2 rounded-r-md hover:bg-primary-700 transition">
+                        <i class="fas fa-search"></i>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </header>
+    
+    <!-- Main Content -->
+    <main class="container mx-auto px-4 py-8">
+        {% block content %}{% endblock %}
+    </main>
+    
+    <!-- Footer -->
+    <footer class="bg-primary-800 text-white py-8">
+        <div class="container mx-auto px-4">
+            <div class="md:flex md:justify-between">
+                <div class="mb-6 md:mb-0">
+                    <h2 class="text-2xl font-serif font-bold">Мавлоно Ҷалолуддини Балхӣ</h2>
+                    <p class="mt-2 text-primary-200">Осори безаволи адабиёти форсу тоҷик</p>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div>
+                        <h3 class="text-lg font-bold mb-4">Саҳифаҳо</h3>
+                        <ul class="space-y-2">
+                            <li><a href="{{ url_for('index') }}" class="hover:text-primary-300 transition">Асосӣ</a></li>
+                            <li><a href="{{ url_for('poems') }}" class="hover:text-primary-300 transition">Ашъор</a></li>
+                            <li><a href="{{ url_for('biography') }}" class="hover:text-primary-300 transition">Зиндагинома</a></li>
+                            <li><a href="{{ url_for('search') }}" class="hover:text-primary-300 transition">Ҷустуҷӯ</a></li>
+                        </ul>
+                    </div>
+                    
+                    <div>
+                        <h3 class="text-lg font-bold mb-4">Дар бораи сомона</h3>
+                        <p class="text-primary-200">
+                            Ин сомона барои шиносоӣ бо осори Мавлоно Ҷалолуддини Балхӣ (Румӣ) таҳия шудааст.
+                        </p>
+                    </div>
+                </div>
+            </div>
+            
+            <hr class="my-6 border-primary-700">
+            
+            <!-- Social Media Links -->
+            <div class="flex justify-center space-x-6 mb-4">
+                <a href="https://instagram.com/" target="_blank" class="text-white hover:text-secondary-300 transition">
+                    <i class="fab fa-instagram fa-lg"></i>
+                </a>
+                <a href="https://facebook.com/" target="_blank" class="text-white hover:text-secondary-300 transition">
+                    <i class="fab fa-facebook fa-lg"></i>
+                </a>
+                <a href="https://twitter.com/" target="_blank" class="text-white hover:text-secondary-300 transition">
+                    <i class="fab fa-twitter fa-lg"></i>
+                </a>
+                <a href="https://t.me/" target="_blank" class="text-white hover:text-secondary-300 transition">
+                    <i class="fab fa-telegram fa-lg"></i>
+                </a>
+                <a href="https://youtube.com/" target="_blank" class="text-white hover:text-secondary-300 transition">
+                    <i class="fab fa-youtube fa-lg"></i>
+                </a>
+            </div>
+            
+            <div class="text-center text-primary-300">
+                &copy; 2023 Мавлоно Ҷалолуддини Балхӣ (Румӣ). Ҳуқуқи истифодабаранда маҳфуз аст.
+            </div>
+        </div>
+    </footer>
+    
+    <!-- JavaScript -->
+    <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+    {% block extra_js %}{% endblock %}
+</body>
+</html>

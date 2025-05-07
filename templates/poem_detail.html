@@ -1,0 +1,110 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ poem.title_tj }} - Мавлоно Ҷалолуддини Балхӣ (Румӣ){% endblock %}
+
+{% block content %}
+<section class="mb-8">
+    <div class="mb-6">
+        <a href="{{ url_for('poems') }}" class="text-primary-600 hover:text-primary-800 transition">
+            <i class="fas fa-arrow-left mr-1"></i> Бозгашт ба рӯйхати ашъор
+        </a>
+    </div>
+    
+    <div class="bg-white rounded-lg shadow-md p-6 md:p-8">
+        <h1 class="text-2xl md:text-3xl font-serif font-bold text-primary-800 mb-4">{{ poem.title_tj }}</h1>
+        
+        <div class="flex flex-wrap gap-2 mb-6 text-sm">
+            <span class="inline-block px-3 py-1 bg-primary-100 text-primary-800 rounded-full">
+                {{ poem.section.volume.book.title_tj }}
+            </span>
+            <span class="inline-block px-3 py-1 bg-primary-100 text-primary-800 rounded-full">
+                {{ poem.section.volume.title_tj }}
+            </span>
+            <span class="inline-block px-3 py-1 bg-primary-100 text-primary-800 rounded-full">
+                {{ poem.section.title_tj }}
+            </span>
+        </div>
+        
+        <div class="prose prose-lg max-w-none text-gray-800">
+            <div class="poem-content font-serif text-xl leading-relaxed whitespace-pre-line text-left" dir="ltr">
+                {{ poem.content_tj|safe }}
+            </div>
+        </div>
+    </div>
+    
+    <!-- Share and Actions -->
+    <div class="mt-6 flex justify-between items-center">
+        <div class="flex space-x-4">
+            <button id="copy-poem" class="flex items-center text-gray-600 hover:text-primary-600 transition">
+                <i class="fas fa-copy mr-2"></i> Нусхабардорӣ
+            </button>
+            
+            <button id="print-poem" class="flex items-center text-gray-600 hover:text-primary-600 transition" onclick="window.print()">
+                <i class="fas fa-print mr-2"></i> Чоп
+            </button>
+        </div>
+        
+        <div class="flex space-x-4">
+            <a href="https://www.facebook.com/sharer/sharer.php?u={{ request.url|urlencode }}" target="_blank" class="text-blue-600 hover:text-blue-800 transition" title="Ба воситаи Facebook бо дигарон бо ҳам бинед">
+                <i class="fab fa-facebook fa-lg"></i>
+            </a>
+            <a href="https://twitter.com/intent/tweet?text={{ poem.title_tj|urlencode }}&url={{ request.url|urlencode }}" target="_blank" class="text-cyan-600 hover:text-cyan-800 transition" title="Ба воситаи Twitter бо дигарон бо ҳам бинед">
+                <i class="fab fa-twitter fa-lg"></i>
+            </a>
+            <a href="https://api.whatsapp.com/send?text={{ poem.title_tj|urlencode }}%20{{ request.url|urlencode }}" target="_blank" class="text-green-600 hover:text-green-800 transition" title="Ба воситаи WhatsApp бо дигарон бо ҳам бинед">
+                <i class="fab fa-whatsapp fa-lg"></i>
+            </a>
+            <a href="https://t.me/share/url?url={{ request.url|urlencode }}&text={{ poem.title_tj|urlencode }}" target="_blank" class="text-blue-500 hover:text-blue-700 transition" title="Ба воситаи Telegram бо дигарон бо ҳам бинед">
+                <i class="fab fa-telegram fa-lg"></i>
+            </a>
+        </div>
+    </div>
+</section>
+
+<!-- Related Poems -->
+<section class="mb-8">
+    <h2 class="text-2xl font-serif font-bold text-primary-800 mb-4">Ашъори монанд</h2>
+    
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        {% for i in range(3) %}
+        <div class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition">
+            <div class="p-6">
+                <h3 class="text-xl font-bold text-primary-700 mb-2">Шеъри монанд</h3>
+                <p class="text-gray-600 mb-4">
+                    Намунаи матни шеъри монанд аз ҳамин китоб ё фаслҳои монанд...
+                </p>
+                <a href="#" class="text-primary-600 hover:text-primary-800 font-medium transition">
+                    Хондани шеър »
+                </a>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</section>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    // Copy poem functionality
+    document.getElementById('copy-poem').addEventListener('click', function() {
+        const poemText = document.querySelector('.poem-content').innerText;
+        const poemTitle = "{{ poem.title_tj }}";
+        
+        // Create a temporary textarea element to copy from
+        const textArea = document.createElement('textarea');
+        textArea.value = `${poemTitle}\n\n${poemText}\n\nАз осори Мавлоно Ҷалолуддини Балхӣ (Румӣ)`;
+        document.body.appendChild(textArea);
+        textArea.select();
+        
+        try {
+            document.execCommand('copy');
+            alert('Шеър нусхабардорӣ шуд!');
+        } catch (err) {
+            console.error('Нусхабардорӣ бо хато анҷом ёфт:', err);
+            alert('Нусхабардорӣ бо хато анҷом ёфт.');
+        }
+        
+        document.body.removeChild(textArea);
+    });
+</script>
+{% endblock %}

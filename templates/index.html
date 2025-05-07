@@ -1,0 +1,112 @@
+{% extends 'base.html' %}
+
+{% block title %}Мавлоно Ҷалолуддини Балхӣ (Румӣ) - Асосӣ{% endblock %}
+
+{% block content %}
+<section class="py-12 bg-white rounded-lg shadow-md mb-10">
+    <div class="container mx-auto px-4 text-center">
+        <h1 class="text-4xl md:text-5xl font-serif font-bold text-primary-800 mb-4">
+            Мавлоно Ҷалолуддини Балхӣ (Румӣ)
+        </h1>
+        <p class="text-xl text-gray-600 mb-8 max-w-3xl mx-auto">
+            Шоир ва мутафаккири бузурги форсу тоҷик, 
+            асосгузори тариқати мавлавия дар тасаввуф
+        </p>
+        
+        <div class="flex flex-wrap justify-center gap-4">
+            <a href="{{ url_for('poems') }}" class="px-6 py-3 bg-primary-600 text-white rounded-md hover:bg-primary-700 transition shadow-md">
+                Осори Румӣ
+            </a>
+            <a href="{{ url_for('biography') }}" class="px-6 py-3 bg-white text-primary-600 border border-primary-600 rounded-md hover:bg-primary-50 transition shadow-sm">
+                Зиндагинома
+            </a>
+        </div>
+    </div>
+</section>
+
+<!-- Daily Verse Section -->
+<section class="mb-12">
+    <div class="container mx-auto">
+        <div class="bg-secondary-50 border-l-4 border-secondary-600 rounded-lg p-6 md:p-8 shadow-md">
+            <h2 class="text-2xl md:text-3xl font-serif text-secondary-800 mb-4">Байти рӯз</h2>
+            
+            {% if daily_verse %}
+            <div class="prose prose-lg max-w-none text-gray-800">
+                <blockquote class="text-xl md:text-2xl font-serif italic mt-0 pt-0 leading-relaxed whitespace-pre-line">
+                    {{ daily_verse.verse_text|safe }}
+                </blockquote>
+                
+                <div class="mt-4 text-right">
+                    <a href="{{ url_for('poem_detail', poem_id=daily_verse.poem_id) }}" class="text-secondary-600 hover:text-secondary-800 transition">
+                        Хондани шеъри пурра »
+                    </a>
+                </div>
+            </div>
+            {% else %}
+            <p class="text-gray-600">Мутаасифона, имрӯз байте барои намоиш дастрас нест.</p>
+            {% endif %}
+        </div>
+    </div>
+</section>
+
+<!-- Books Overview -->
+<section class="mb-12">
+    <div class="container mx-auto">
+        <h2 class="text-2xl md:text-3xl font-serif text-primary-800 mb-6">Осори Мавлоно Ҷалолуддини Балхӣ</h2>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {% for book in books %}
+            <div class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition">
+                <div class="p-6">
+                    <h3 class="text-xl font-bold text-primary-700 mb-2">{{ book.title_tj }}</h3>
+                    <p class="text-gray-600 mb-4">
+                        {% if book.description_tj %}
+                            {{ book.description_tj|truncate(150) }}
+                        {% else %}
+                            Маҷмӯаи ашъори Мавлоно Ҷалолуддини Балхӣ
+                        {% endif %}
+                    </p>
+                    <a href="{{ url_for('poems', book_id=book.id) }}" class="text-primary-600 hover:text-primary-800 font-medium transition">
+                        Дидани ашъор »
+                    </a>
+                </div>
+            </div>
+            {% else %}
+            <div class="col-span-full text-center py-8">
+                <p class="text-gray-600">Мутаасифона, ҳоло китобҳои Мавлоно Ҷалолуддини Балхӣ дар пойгоҳи маълумот мавҷуд нестанд.</p>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<!-- About Rumi Brief -->
+<section>
+    <div class="container mx-auto">
+        <div class="bg-primary-50 rounded-lg p-6 md:p-8 shadow-md">
+            <div class="md:flex md:items-center">
+                <div class="md:w-1/3 mb-6 md:mb-0 flex justify-center">
+                    <div class="w-48 h-48 md:w-56 md:h-56">
+                        <img src="{{ url_for('static', filename='svg/rumi_profile.svg') }}" alt="Мавлоно Румӣ">
+                    </div>
+                </div>
+                
+                <div class="md:w-2/3 md:pl-8">
+                    <h2 class="text-2xl md:text-3xl font-serif text-primary-800 mb-4">Дар бораи Ҷалолуддини Балхӣ</h2>
+                    <p class="text-gray-700 text-lg mb-4">
+                        Мавлоно Ҷалолуддини Балхӣ, ки бо номи Румӣ низ машҳур аст, яке аз 
+                        бузургтарин шоирон ва мутафаккирони форсу тоҷик мебошад, ки дар асри 13-ум зиндагӣ кардааст.
+                    </p>
+                    <p class="text-gray-700 text-lg mb-6">
+                        Осори ӯ, ба хусус "Маснавии маънавӣ" ва "Девони Шамс" таъсири амиқе ба адабиёт, 
+                        фалсафа ва тасаввуфи ҷаҳонӣ гузоштааст.
+                    </p>
+                    <a href="{{ url_for('biography') }}" class="inline-block px-5 py-2 bg-primary-600 text-white rounded-md hover:bg-primary-700 transition shadow-md">
+                        Зиндагиномаи пурра
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
