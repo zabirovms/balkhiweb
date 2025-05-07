@@ -1,5 +1,5 @@
 import datetime
-from app import db
+from extensions import db
 
 class Book(db.Model):
     """Model representing a book collection of Rumi's works"""

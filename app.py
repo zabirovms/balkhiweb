@@ -3,18 +3,12 @@ import logging
 from urllib.parse import urlparse
 
 from flask import Flask
-from flask_sqlalchemy import SQLAlchemy
-from sqlalchemy.orm import DeclarativeBase
 from werkzeug.middleware.proxy_fix import ProxyFix
+from extensions import db
 
 # Configure logging
 logging.basicConfig(level=logging.DEBUG)
 
-class Base(DeclarativeBase):
-    pass
-
-
-db = SQLAlchemy(model_class=Base)
 # create the app
 app = Flask(__name__)
 app.secret_key = os.environ.get("SESSION_SECRET", "tajik_rumi_app_secret_key")
